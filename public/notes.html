@@ -19,43 +19,30 @@
   </head>
 
   <body>
-   
     <nav class="navbar navbar-dark bg-dark">
       <a class="navbar-brand" href="/">Note Taker </a>
       <div class="icons">
-        <i class="fas fa-save text-light save-note"  id="save_note_btn" style="margin: 0 15px; visibility: hidden;" onclick='alert("Wanna save note?")'></i>
-        <i class="fas fa-plus text-light new-note" onclick='alert("Wanna add a note?")'></i>
+        <i class="fas fa-save text-light save-note"></i>
+        <i class="fas fa-plus text-light new-note"></i>
       </div>
     </nav>
-   
-      <div class="container-fluid" style="padding: 0 !important;">
-        <div class="row">
-          <div class="col-4 list-container" style="border-right: 1px solid #a5a5a5 !important;" >
-            <div class="card" style="width: 100%; padding: 0 0 0 10px !important;">
-              <ul class="list-group" style="list-style: none; " > 
-                <li> item 1</li>
-              </ul>
-            </div>
-            <div class="card" style="width: 100%; padding: 0 0 0 10px !important;">
-              <ul class="list-group"  style="list-style: none;">
-                <li> item 2</li>
-              </ul>
-            </div>
-          </div>
-            <div class="col-8">
-              <input
-                class="note-title"  style="width: 100%; border: 0; font-size: 2.1rem;"
-                placeholder="Note Title"
-                maxlength="28"
-                type="text"
-              /><br>
-              <textarea class="note-textarea"  style="width: 100%; border: 0; font-size: 0.9rem;"
-              placeholder="Note Text"></textarea>
-            </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-4 list-container">
+          <div class="card">
+            <ul class="list-group"></ul>
           </div>
         </div>
+        <div class="col-8">
+          <input
+            class="note-title"
+            placeholder="Note Title"
+            maxlength="28"
+            type="text"
+          />
+          <textarea class="note-textarea" placeholder="Note Text"></textarea>
         </div>
- 
+      </div>
+    </div>
     <script src="/assets/js/index.js"></script>
   </body>
-</html>

@@ -33,6 +33,8 @@ const getNotes = () =>
     },
   });
 
+  
+
 const saveNote = (note) =>
   fetch('/api/notes', {
     method: 'POST',
@@ -41,6 +43,8 @@ const saveNote = (note) =>
     },
     body: JSON.stringify(note),
   });
+
+  
 
 const deleteNote = (id) =>
   fetch(`/api/notes/${id}`, {
@@ -52,7 +56,7 @@ const deleteNote = (id) =>
 
 const renderActiveNote = () => {
   hide(saveNoteBtn);
-
+  alert("Your are in renderActiveNote() method where Note id? " + activeNote.id);
   if (activeNote.id) {
     noteTitle.setAttribute('readonly', true);
     noteText.setAttribute('readonly', true);
@@ -67,6 +71,7 @@ const renderActiveNote = () => {
 };
 
 const handleNoteSave = () => {
+  alert("You are entering Saving Notes Zone! having " + noteTitle.value );
   const newNote = {
     title: noteTitle.value,
     text: noteText.value,
@@ -179,5 +184,41 @@ if (window.location.pathname === '/notes') {
   noteTitle.addEventListener('keyup', handleRenderSaveBtn);
   noteText.addEventListener('keyup', handleRenderSaveBtn);
 }
+
+// const zookeeperForm = document.querySelector('#zookeeper-form');
+// const handleZookeeperFormSubmit = event => {
+//   event.preventDefault();
+//   const title = zookeeperForm.querySelector('.note-title').value;
+//   const text = zookeeperForm.querySelector('.note-textarea').value;
+//   // const name = zookeeperForm.querySelector('[name="zookeeper-name"]').value;
+//   // const favoriteAnimal = zookeeperForm.querySelector('[name="favorite-animal"]').value;
+//   // const zookeeperObj = { name, age, favoriteAnimal };
+// 
+//   const noteObj = { title, text };
+//   console.log("+++ Note Obj with no id +++");
+//   console.log(noteObj);
+// 
+//   fetch('api/notes', {   
+//     method: 'POST',  
+//     headers: {
+//       Accept: 'application/json',
+//       'Content-Type': 'application/json'
+//     },
+//     body: JSON.stringify(noteObj)
+//   })
+//     .then(response => {
+//       if (response.ok) {
+//         return response.json();
+//       }
+//       alert('Error: ' + response.statusText); //Error: Internal Server Error
+//     })
+//     .then(postResponse => {
+//       console.log("+++ Note Obj with defined id +++");
+//       console.log(postResponse);
+//       alert('Thank you for adding a note!');
+//     });
+// };
+ 
+// zookeeperForm.addEventListener('submit', handleZookeeperFormSubmit);
 
 getAndRenderNotes();
