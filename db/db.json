@@ -10,5 +10,9 @@
      {
           "title": "Test Title Next B",
           "text": "Text two"
-     } 
+     },
+     {
+          "title": "Test Tittle Next C",
+          "text": "This is content of note C"
+     }
 ]

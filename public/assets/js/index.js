@@ -25,6 +25,7 @@ const hide = (elem) => {
 // activeNote is used to keep track of the note in the textarea
 let activeNote = {};
 
+// Called by getAndRenderNotes()
 const getNotes = () =>
   fetch('/api/notes', {
     method: 'GET',
@@ -33,8 +34,7 @@ const getNotes = () =>
     },
   });
 
-  
-
+// Called by handleNoteSave()
 const saveNote = (note) =>
   fetch('/api/notes', {
     method: 'POST',
@@ -44,8 +44,6 @@ const saveNote = (note) =>
     body: JSON.stringify(note),
   });
 
-  
-
 const deleteNote = (id) =>
   fetch(`/api/notes/${id}`, {
     method: 'DELETE',
@@ -54,6 +52,7 @@ const deleteNote = (id) =>
     },
   });
 
+// When will the id matter
 const renderActiveNote = () => {
   hide(saveNoteBtn);
   alert("Your are in renderActiveNote() method where Note id? " + activeNote.id);
@@ -70,19 +69,20 @@ const renderActiveNote = () => {
   }
 };
 
+// Triggered when the floppy disk button - saveNoteBtn - gets clicked
 const handleNoteSave = () => {
   alert("You are entering Saving Notes Zone! having " + noteTitle.value );
   const newNote = {
     title: noteTitle.value,
     text: noteText.value,
   };
-  saveNote(newNote).then(() => {
-    getAndRenderNotes();
+  saveNote(newNote).then(() => { // a POST per saveNote
+    getAndRenderNotes(); // getNotes().then(renderNoteList); // a GET per getNotes()
     renderActiveNote();
   });
 };
 
-// Delete the clicked note
+// Delete the clicked note // Will be back
 const handleNoteDelete = (e) => {
   // Prevents the click listener for the list from being called when the button inside of it is clicked
   e.stopPropagation();
@@ -100,6 +100,7 @@ const handleNoteDelete = (e) => {
   });
 };
 
+// Try this one
 // Sets the activeNote and displays it
 const handleNoteView = (e) => {
   e.preventDefault();
@@ -107,12 +108,14 @@ const handleNoteView = (e) => {
   renderActiveNote();
 };
 
+// Triggered when the + sign is clicked
 // Sets the activeNote to and empty object and allows the user to enter a new note
 const handleNewNoteView = (e) => {
   activeNote = {};
   renderActiveNote();
 };
 
+// Self explanatory
 const handleRenderSaveBtn = () => {
   if (!noteTitle.value.trim() || !noteText.value.trim()) {
     hide(saveNoteBtn);
@@ -121,6 +124,8 @@ const handleRenderSaveBtn = () => {
   }
 };
 
+// (2) 
+// Happens inside the Promise that returned from getNotes()
 // Render the list of note titles
 const renderNoteList = async (notes) => {
   let jsonNotes = await notes.json();
