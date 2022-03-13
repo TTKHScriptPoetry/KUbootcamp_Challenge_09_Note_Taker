@@ -3,6 +3,7 @@ let noteText;
 let saveNoteBtn;
 let newNoteBtn;
 let noteList;
+const STRING_EMPTY = '';
 
 if (window.location.pathname === '/notes') {
   noteTitle = document.querySelector('.note-title');
@@ -23,7 +24,7 @@ const hide = (elem) => {
 };
 
 // activeNote is used to keep track of the note in the textarea
-let activeNote = {};
+var activeNote = {};
 
 // Called by getAndRenderNotes()
 const getNotes = () =>
@@ -52,26 +53,64 @@ const deleteNote = (id) =>
     },
   });
 
-// When will the id matter
 const renderActiveNote = () => {
   hide(saveNoteBtn);
-  alert("Your are in renderActiveNote() method where Note id? " + activeNote.id);
-  if (activeNote.id) {
+  if((activeNote.title)) // if(!(typeof activeNote.title === 'undefined'))
+  {
+    // alert("activeNote is not falsy");
     noteTitle.setAttribute('readonly', true);
     noteText.setAttribute('readonly', true);
+    noteTitle.setAttribute('placeholder', STRING_EMPTY);
+    noteText.setAttribute('placeholder', STRING_EMPTY);
+
     noteTitle.value = activeNote.title;
     noteText.value = activeNote.text;
-  } else {
+
+    // console.log('++++++++++tt+++++++++++++');
+    // console.log(noteTitle.value);
+    // console.log(noteText.value);
+    // console.log('+++++++++++bb++++++++++++');
+
+    if (activeNote.id) {
+      // alert("Your are in renderActiveNote() method where Note id? " + activeNote.id);
+      noteTitle.setAttribute('readonly', true);
+      noteText.setAttribute('readonly', true);
+      noteTitle.value = activeNote.title;
+      noteText.value = activeNote.text;
+    }     
+  }
+  else 
+  {
+    // alert("activeNote is falsy");
     noteTitle.removeAttribute('readonly');
     noteText.removeAttribute('readonly');
-    noteTitle.value = '';
-    noteText.value = '';
+    noteTitle.setAttribute('placeholder', 'Note Title');
+    noteText.setAttribute('placeholder', 'Note Text');    
+    noteTitle.value = STRING_EMPTY;
+    noteText.value = STRING_EMPTY;
+    noteTitle.focus();
   }
 };
 
-// Triggered when the floppy disk button - saveNoteBtn - gets clicked
+// original version
+// const renderActiveNote = () => {
+//   hide(saveNoteBtn);
+//   if (activeNote.id) {
+//     noteTitle.setAttribute('readonly', true);
+//     noteText.setAttribute('readonly', true);
+//     noteTitle.value = activeNote.title;
+//     noteText.value = activeNote.text;
+//   } else {
+//     noteTitle.removeAttribute('readonly');
+//     noteText.removeAttribute('readonly');
+//     noteTitle.value = '';
+//     noteText.value = '';
+//   }
+// };
+
+// Triggered when the floppy disk button aka saveNoteBtn gets clicked
 const handleNoteSave = () => {
-  alert("You are entering Saving Notes Zone! having " + noteTitle.value );
+  // alert("You are entering Saving Notes Zone! having " + noteTitle.value );
   const newNote = {
     title: noteTitle.value,
     text: noteText.value,
@@ -105,13 +144,20 @@ const handleNoteDelete = (e) => {
 const handleNoteView = (e) => {
   e.preventDefault();
   activeNote = JSON.parse(e.target.parentElement.getAttribute('data-note'));
+  // alert("data-note: " + activeNote.title + " " +  activeNote.text);
+  console.log(activeNote);
   renderActiveNote();
 };
 
 // Triggered when the + sign is clicked
 // Sets the activeNote to and empty object and allows the user to enter a new note
 const handleNewNoteView = (e) => {
-  activeNote = {};
+  e.preventDefault();
+  activeNote = {}; // this makes activeNote.title, activeNote.text both undefined that triggers empty field rendering
+  // console.log('++++++++++t+++++++++++');
+  //   console.log(activeNote.title); // prints undefined
+  //   console.log(activeNote.text); // prints undefined
+  // console.log('+++++++++++b++++++++++');
   renderActiveNote();
 };
 
@@ -125,12 +171,12 @@ const handleRenderSaveBtn = () => {
 };
 
 // (2) 
-// Happens inside the Promise that returned from getNotes()
+// Happens inside the clause Promise as a result of getNotes()
 // Render the list of note titles
 const renderNoteList = async (notes) => {
   let jsonNotes = await notes.json();
   if (window.location.pathname === '/notes') {
-    noteList.forEach((el) => (el.innerHTML = ''));
+    noteList.forEach((el) => (el.innerHTML = '')); // clear ul content
   }
 
   let noteListItems = [];
@@ -189,41 +235,5 @@ if (window.location.pathname === '/notes') {
   noteTitle.addEventListener('keyup', handleRenderSaveBtn);
   noteText.addEventListener('keyup', handleRenderSaveBtn);
 }
-
-// const zookeeperForm = document.querySelector('#zookeeper-form');
-// const handleZookeeperFormSubmit = event => {
-//   event.preventDefault();
-//   const title = zookeeperForm.querySelector('.note-title').value;
-//   const text = zookeeperForm.querySelector('.note-textarea').value;
-//   // const name = zookeeperForm.querySelector('[name="zookeeper-name"]').value;
-//   // const favoriteAnimal = zookeeperForm.querySelector('[name="favorite-animal"]').value;
-//   // const zookeeperObj = { name, age, favoriteAnimal };
-// 
-//   const noteObj = { title, text };
-//   console.log("+++ Note Obj with no id +++");
-//   console.log(noteObj);
-// 
-//   fetch('api/notes', {   
-//     method: 'POST',  
-//     headers: {
-//       Accept: 'application/json',
-//       'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify(noteObj)
-//   })
-//     .then(response => {
-//       if (response.ok) {
-//         return response.json();
-//       }
-//       alert('Error: ' + response.statusText); //Error: Internal Server Error
-//     })
-//     .then(postResponse => {
-//       console.log("+++ Note Obj with defined id +++");
-//       console.log(postResponse);
-//       alert('Thank you for adding a note!');
-//     });
-// };
  
-// zookeeperForm.addEventListener('submit', handleZookeeperFormSubmit);
-
 getAndRenderNotes();
