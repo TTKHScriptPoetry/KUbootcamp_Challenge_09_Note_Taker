@@ -20,5 +20,7 @@ app.listen(MYPORT, () => {
   console.log(`API server now on port ${MYPORT}`);
   console.log(`Example app listening at http://localhost:${MYPORT}/`); // index pages
   console.log(`Example app listening at http://localhost:${MYPORT}/api/notes`);
+  console.log(`Example app listening at https://mercuryktnotetaker.herokuapp.com/api/notes`);
+  console.log(`Example app listening at https://mercuryktnotetaker.herokuapp.com`);
   console.log ('---------------');
  });
