@@ -26,8 +26,10 @@ const hide = (elem) => {
 // activeNote is used to keep track of the note in the textarea
 var activeNote = {};
 
+// (1)
 // Called by getAndRenderNotes()
 const getNotes = () =>
+  // alert("getNote is called!");
   fetch('/api/notes', {
     method: 'GET',
     headers: {
@@ -45,13 +47,13 @@ const saveNote = (note) =>
     body: JSON.stringify(note),
   });
 
-const deleteNote = (id) =>
-  fetch(`/api/notes/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+// const deleteNote = (id) =>
+//   fetch(`/api/notes/${id}`, {
+//     method: 'DELETE',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//   });
 
 const renderActiveNote = () => {
   hide(saveNoteBtn);
@@ -92,22 +94,6 @@ const renderActiveNote = () => {
   }
 };
 
-// original version
-// const renderActiveNote = () => {
-//   hide(saveNoteBtn);
-//   if (activeNote.id) {
-//     noteTitle.setAttribute('readonly', true);
-//     noteText.setAttribute('readonly', true);
-//     noteTitle.value = activeNote.title;
-//     noteText.value = activeNote.text;
-//   } else {
-//     noteTitle.removeAttribute('readonly');
-//     noteText.removeAttribute('readonly');
-//     noteTitle.value = '';
-//     noteText.value = '';
-//   }
-// };
-
 // Triggered when the floppy disk button aka saveNoteBtn gets clicked
 const handleNoteSave = () => {
   // alert("You are entering Saving Notes Zone! having " + noteTitle.value );
@@ -121,7 +107,34 @@ const handleNoteSave = () => {
   });
 };
 
-// Delete the clicked note // Will be back
+const deleteNote = (id) =>
+  fetch(`/api/notes/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+// // Delete the clicked note  
+// const handleNoteDelete = (e) => {
+//   // Prevents the click listener for the list from being called when the button inside of it is clicked
+//   e.stopPropagation();
+//   const note = e.target; // delete icon of the to-be-deleted note
+//   // alert("Welcome to handleNoteDelete method body");
+//    
+//   const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
+//   if (activeNote.id === noteId) {
+//     activeNote = {};  
+//   }
+// 
+//   deleteNote(noteId).then(() => {
+//     console.log(activeNote)
+//     getAndRenderNotes();
+//     renderActiveNote();
+//   });
+// };
+
+
 const handleNoteDelete = (e) => {
   // Prevents the click listener for the list from being called when the button inside of it is clicked
   e.stopPropagation();
@@ -181,6 +194,7 @@ const renderNoteList = async (notes) => {
 
   let noteListItems = [];
 
+   //|||||||||||||||||||||||||||||||||||||||||||| Start of createLi() ||||||||||||||||||||||||||||||||||||||||||||
   // Returns HTML element with or without a delete button
   const createLi = (text, delBtn = true) => {
     const liEl = document.createElement('li');
@@ -209,14 +223,20 @@ const renderNoteList = async (notes) => {
 
     return liEl;
   };
-
+  //|||||||||||||||||||||||||||||||||||||||||||| End of createLi() ||||||||||||||||||||||||||||||||||||||||||||
   if (jsonNotes.length === 0) {
     noteListItems.push(createLi('No saved Notes', false));
+
+    noteTitle.setAttribute('readonly', true); // clear fields if previously viewing a note
+    noteText.setAttribute('readonly', true);
+    noteTitle.setAttribute('placeholder', STRING_EMPTY);
+    noteText.setAttribute('placeholder', STRING_EMPTY);
+
   }
 
   jsonNotes.forEach((note) => {
     const li = createLi(note.title);
-    li.dataset.note = JSON.stringify(note);
+    li.dataset.note = JSON.stringify(note); // converted to data-note
 
     noteListItems.push(li);
   });

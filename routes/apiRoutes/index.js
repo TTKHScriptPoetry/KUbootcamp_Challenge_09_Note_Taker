@@ -2,30 +2,44 @@ const express = require('express');
 const router = express.Router();
 
 // import customized libraries
-const { filterByQuery, findById, createNewNote, validateNote } = require('../../lib/notes');
+const { filterByQuery, filterById, createNewNote, scanNotes } = require('../../lib/notes');
 // const { notes } = require('../../db/notes'); // json data file  // an object having 1 array of note-objects 
-const notes  = require('../../db/db'); // json data file  // an array of note objects
+var notes  = require('../../db/db'); // json data format  // an array of note objects
 
 router.get("/notes", (req, res) => {  
-  let results = notes;
+  let results = scanNotes(notes, idExisted = true); // notes;
   if (req.query) {
     results = filterByQuery(req.query, results);
   }
+  // console.log('gggggggggggggggggggggggggg');
+  // console.log(results);
   res.json(results);
  });
 
-// Just in case
-router.get("/notes/:id", (req, res) => {  
-  const result = findById(req.params.id, notes);
-  if (result) {
-    res.json(result);
-  } else {
-    res.send(404);
+// Method DELETE
+router.delete("/notes/:id", (req, res) => {  
+  const { id } = req.params;
+  const deleted = notes.find(note => note.id === id);
+  // console.log('fffffffffffffffffffffffffff');
+  // console.log (deleted);
+  if(deleted){
+    let undeleted = filterById(req.params.id, notes); // undeleted notes
+    // console.log('uuuuuuuuuuuuuuuuuuuuuuuuuuuu');
+    // console.log (undeleted);
+    notes = scanNotes(undeleted, idExisted = true);
+    // console.log('nnnnnnnnnnnnnnnnnnnnnnnnnnnn');
+    // console.log (notes);
+    res.json(notes);
+  }
+  else {
+    res.json({message: "It appears the note with given ID does not exist"})
   }
 });
 
+// Method POST
 router.post("/notes", (req, res) => {  
-  // // req.body.id = notes.length.toString(); // will be back
+  // console.log("Begin to save new message via post method");
+  console.log(req.body);
   const note = createNewNote(req.body, notes);
   res.json(note);
    
