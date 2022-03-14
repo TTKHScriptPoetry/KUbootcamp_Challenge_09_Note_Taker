@@ -6,6 +6,7 @@ const { filterByQuery, filterById, createNewNote, scanNotes } = require('../../l
 // const { notes } = require('../../db/notes'); // json data file  // an object having 1 array of note-objects 
 var notes  = require('../../db/db'); // json data format  // an array of note objects
 
+// Method GET
 router.get("/notes", (req, res) => {  
   let results = scanNotes(notes, idExisted = true); // notes;
   if (req.query) {
@@ -20,7 +21,7 @@ router.get("/notes", (req, res) => {
 router.delete("/notes/:id", (req, res) => {  
   const { id } = req.params;
   const deleted = notes.find(note => note.id === id);
-  // console.log('fffffffffffffffffffffffffff');
+  // console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmm');
   // console.log (deleted);
   if(deleted){
     let undeleted = filterById(req.params.id, notes); // undeleted notes
