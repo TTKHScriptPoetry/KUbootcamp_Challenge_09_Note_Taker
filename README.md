@@ -21,7 +21,7 @@
 ![floppydisk_appears](https://user-images.githubusercontent.com/100046315/158105293-38b91ede-a27b-4ed6-b444-e7ec8165a241.jpg)
 ###### Detail note displayed upon clicking on a note title
 ![display-detail_note-C](https://user-images.githubusercontent.com/100046315/158105314-baab8bc6-e6b4-49a4-bf81-1e142011cd16.png)
-###### Note is disappear as a result of a deletion (Note C) 
+###### Note disappears as a result of a deletion (Note C) 
 ![note-C_absent_per_deleted](https://user-images.githubusercontent.com/100046315/158105331-6662a502-5408-453b-ae97-3d30ac8e6ffa.png)
 ###### When Note Taker app is empty
 ![No_Saved_Notes](https://user-images.githubusercontent.com/100046315/158105342-64321037-7a56-4706-b053-076c76984866.jpg)
